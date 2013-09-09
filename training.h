@@ -13,6 +13,8 @@
 #include <map>
 #include <string>
 
+using namespace std;
+
 class Training {
 public:
     Training(string);
