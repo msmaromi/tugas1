@@ -16,14 +16,20 @@ using namespace std;
 
 class ID3 {
 public:
+    ID3();
     ID3(Training);
     
     void classification(Training);
-    void entropyTotal();
+    double entropy(double, double);
+    double gainOutlook(double, double, double, double, double, double, double, double);
+    double gainTemperature(double, double, double, double, double, double, double, double);
+    double gainHumidity(double, double, double, double, double, double);
+    double gainWind(double, double, double, double, double, double);
+
     
 private:
-    Tree  tr;
+    //Tree  tr;
     
-}
+};
 
 #endif /* defined(____id3__) */
