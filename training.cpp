@@ -38,10 +38,22 @@ Training::Training(string file) {
     extractFile(file);
 }
 
-Training& Training::operator=(const Training& tr) {
+Training::Training(const Training& tr) {
+    numberAttr = tr.numberAttr;
+    N = tr.N;
     targetAttribute = tr.targetAttribute;
-    
-    return *this;
+    attribute = new string[numberAttr];
+    for (int i=0; i<numberAttr; i++) {
+        attribute[i] = tr.attribute[i];
+    }
+    data = new map<string, string>[N];
+    for (int j=0; j<N; j++) {
+        data[j]["outlook"] = tr.data[j]["outlook"];
+        data[j]["temperature"] = tr.data[j]["temperature"];
+        data[j]["humidity"] = tr.data[j]["humidity"];
+        data[j]["wind"] = tr.data[j]["wind"];
+        data[j][targetAttribute] = tr.data[j][targetAttribute];
+    }    
 }
 
 Training::~Training() {
@@ -68,11 +80,7 @@ void Training::extractFile(string file) {
                 int x = 0;
                 while (token!=NULL) {
                     
-                    data[i][attribute[x]] = token;
-                    /*cout << token;
-                    cout << attribute[x];
-                    cout <<data[i][attribute[x]] << endl;*/
-                   
+                    data[i][attribute[x]] = token;                   
                     token = strtok(NULL, ",");
                     x++;
                 }
@@ -124,10 +132,299 @@ string Training::getAttributeValue(int i, string attr) {
     }
 }
 
+int Training::getNumberAttr() {
+    return numberAttr;
+}
+
+int Training::getN() {
+    return N;
+}
+
 bool Training::isAllYes() {
     for (int i=0; i<N; i++) {
-        if (getAttributeValue(i+1, getTargetAttribute())) {
-            <#statements#>
+        if (getAttributeValue(i+1, getTargetAttribute())=="no") {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool Training::isAllNo() {
+    for (int i=0; i<N; i++) {
+        if (getAttributeValue(i+1, getTargetAttribute())=="yes") {
+            return false;
+        }
+    }
+    return true;
+}
+
+void Training::deleteAttribute(string attr) {
+    int j=0;
+    for (int i=0; i<numberAttr; i++) {
+        if (attribute[i]!=attr) {
+            attribute[j] = attribute[i];
+            j++;
+        }
+    }
+    numberAttr = numberAttr - 1;
+}
+
+void Training::deleteInstance(int index) {
+    int j = 0;
+    for (int i=0; i<getN(); i++) {
+        if ((index-1)!=i) {
+            data[j]["outlook"] = data[i]["outlook"];
+            data[j]["temperature"] = data[i]["temperature"];
+            data[j]["humidity"] = data[i]["humidity"];
+            data[j]["wind"] = data[i]["wind"];
+            data[j][targetAttribute] = data[i][targetAttribute];
+            j++;
+        }
+    }
+    N = N - 1;
+}
+
+double Training::countNumYes() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, getTargetAttribute())=="yes") {
+            count++;
+        }
+    }
+    return count;
+}
+
+double Training::countNumNo() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, getTargetAttribute())=="no") {
+            count++;
+        }
+    }
+    return count;
+}
+
+double Training::countSunYes() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "outlook")=="sunny") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="yes") {
+                count++;
+            }
         }
     }
 }
+
+double Training::countSunNo() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "outlook")=="sunny") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="no") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countOverYes() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "outlook")=="overcast") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="yes") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countOverNo() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "outlook")=="overcast") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="no") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countRainYes() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "outlook")=="rain") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="yes") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countRainNo() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "outlook")=="rain") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="no") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countHotYes() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "temperature")=="hot") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="yes") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countHotNo() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "temperature")=="hot") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="no") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countMildYes() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "temperature")=="mild") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="yes") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countMildNo() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "temperature")=="mild") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="no") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countCoolYes() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "temperature")=="cool") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="yes") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countCoolNo() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "temperature")=="cool") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="no") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countHighYes() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "humidity")=="high") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="yes") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countHighNo() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "humidity")=="high") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="no") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countNormalYes() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "humidity")=="normal") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="yes") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countNormalNo() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "humidity")=="normal") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="no") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countStrongYes() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "wind")=="strong") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="yes") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countStrongNo() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "wind")=="strong") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="no") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countWeakYes() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "wind")=="weak") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="yes") {
+                count++;
+            }
+        }
+    }
+}
+
+double Training::countWeakNo() {
+    double count = 0;
+    for (int i=0; i<getN(); i++) {
+        if (getAttributeValue(i+1, "wind")=="weak") {
+            if (getAttributeValue(i+1, getTargetAttribute())=="no") {
+                count++;
+            }
+        }
+    }
+}
+
+
+
+
+
