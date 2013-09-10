@@ -20,14 +20,46 @@ class Training {
 public:
     Training();
     Training(string);
-    Training& operator=(const Training&);
+    Training(const Training&);
     ~Training();
     
     string getAttribute(int);
     string getTargetAttribute();
     string getAttributeValue(int, string);
+    int getNumberAttr();
+    int getN();
     bool isAllYes();
     bool isAllNo();
+    
+    void deleteAttribute(string);
+    void deleteInstance(int);
+    
+    double countNumYes();
+    double countNumNo();
+    
+    double countSunYes();
+    double countSunNo();
+    double countOverYes();
+    double countOverNo();
+    double countRainYes();
+    double countRainNo();
+    
+    double countHotYes();
+    double countHotNo();
+    double countMildYes();
+    double countMildNo();
+    double countCoolYes();
+    double countCoolNo();
+    
+    double countHighYes();
+    double countHighNo();
+    double countNormalYes();
+    double countNormalNo();
+    
+    double countStrongYes();
+    double countStrongNo();
+    double countWeakYes();
+    double countWeakNo();
     
 private:
     string * attribute;
@@ -35,6 +67,7 @@ private:
     map<string, string> * data;
     int N; //jumlah training data
     int numberAttr;
+    
     void extractFile(string);
     void extractAttribute(string);
 };
