@@ -7,6 +7,7 @@
 //
 
 #include "id3.h"
+#include "tree.h"
 #include <cmath>
 
 ID3::ID3() {
@@ -17,13 +18,16 @@ ID3::ID3(Training) {
     
 }
 
-void ID3::classification(Training tr) {
+Tree ID3::classification(Training tr) {
     //create root tree
-    
+    Tree root;
     if (tr.isAllYes()) {
         //single root node label yes
+        root.setData("yes");
+
     } else if (tr.isAllNo()) {
         //single root node label no
+        root.setData("no");
     } else if (tr.getNumberAttr()==0) {
         int numYes = 0;
         int numNo = 0;
@@ -36,9 +40,11 @@ void ID3::classification(Training tr) {
         }
         if (numYes>=numNo) {
             //label yes
+            root.setData("yes");
         } else {
             //label no
-        }
+            root.setData("no");
+        }        
     } else {
         string bestAttr="";
         double gainBestAttr = 0;
@@ -95,15 +101,19 @@ void ID3::classification(Training tr) {
         }
         
         //root << bestAttr
-        
+        root.setData(bestAttr);
+        cout << bestAttr << endl;
+                
         if (bestAttr=="outlook") {
             //add branch sunny
+            root.setLeftBranch("sunny");
             Training tr1 = tr;
             for (int i=0; i<tr1.getN(); i++) {
                 if (tr1.getAttributeValue(i+1, "outlook")!="sunny") {
                     tr1.deleteInstance(i+1);
                 }
             }
+            tr1.deleteAttribute("outlook");
             if (tr1.getN()==0) {
                 int labelYes = 0;
                 int labelNo = 0;
@@ -116,19 +126,23 @@ void ID3::classification(Training tr) {
                 }
                 if (labelYes>labelNo) {
                     //label yes
+                    root.getLeft()->setData("yes");
                 } else {
                     //label no
+                    root.getLeft()->setData("no");
                 }
             } else {
-                classification(tr1);
+                root.setLeft(classification(tr1));
             }
             //add branch overcast
+            root.setCenterBranch("overcast");
             Training tr2 = tr;
             for (int i=0; i<tr2.getN(); i++) {
                 if (tr2.getAttributeValue(i+1, "outlook")!="overcast") {
                     tr2.deleteInstance(i+1);
                 }
             }
+            tr2.deleteAttribute("outlook");
             if (tr2.getN()==0) {
                 int labelYes = 0;
                 int labelNo = 0;
@@ -141,19 +155,23 @@ void ID3::classification(Training tr) {
                 }
                 if (labelYes>labelNo) {
                     //label yes
+                    root.getCenter()->setData("yes");
                 } else {
                     //label no
+                    root.getCenter()->setData("no");
                 }
             } else {
-                classification(tr2);
+                root.setCenter(classification(tr2));
             }
             //add branch rain
+            root.setRightBranch("rain");
             Training tr3 = tr;
             for (int i=0; i<tr3.getN(); i++) {
                 if (tr3.getAttributeValue(i+1, "outlook")!="rain") {
                     tr3.deleteInstance(i+1);
                 }
             }
+            tr3.deleteAttribute("outlook");
             if (tr3.getN()==0) {
                 int labelYes = 0;
                 int labelNo = 0;
@@ -166,20 +184,24 @@ void ID3::classification(Training tr) {
                 }
                 if (labelYes>labelNo) {
                     //label yes
+                    root.getRight()->setData("yes");
                 } else {
                     //label no
+                    root.getRight()->setData("no");
                 }
             } else {
-                classification(tr3);
+                root.setRight(classification(tr3));
             }
         } else if (bestAttr=="temperature") {
             //add branch hot
+            root.setLeftBranch("hot");
             Training tr1 = tr;
             for (int i=0; i<tr1.getN(); i++) {
                 if (tr1.getAttributeValue(i+1, "temperature")!="hot") {
                     tr1.deleteInstance(i+1);
                 }
             }
+            tr1.deleteAttribute("temperature");
             if (tr1.getN()==0) {
                 int labelYes = 0;
                 int labelNo = 0;
@@ -192,20 +214,24 @@ void ID3::classification(Training tr) {
                 }
                 if (labelYes>labelNo) {
                     //label yes
+                    root.getLeft()->setData("yes");
                 } else {
                     //label no
+                    root.getLeft()->setData("no");
                 }
             } else {
-                classification(tr1);
+                root.setLeft(classification(tr1));
             }
             
             //add branch mild
+            root.setCenterBranch("mild");
             Training tr2 = tr;
             for (int i=0; i<tr2.getN(); i++) {
                 if (tr2.getAttributeValue(i+1, "temperature")!="mild") {
                     tr2.deleteInstance(i+1);
                 }
             }
+            tr2.deleteAttribute("temperature");
             if (tr2.getN()==0) {
                 int labelYes = 0;
                 int labelNo = 0;
@@ -218,20 +244,24 @@ void ID3::classification(Training tr) {
                 }
                 if (labelYes>labelNo) {
                     //label yes
+                    root.getCenter()->setData("yes");
                 } else {
                     //label no
+                    root.getCenter()->setData("no");
                 }
             } else {
-                classification(tr2);
+                root.setCenter(classification(tr2));
             }
             
             //add branch cool
+            root.setRightBranch("cool");
             Training tr3 = tr;
             for (int i=0; i<tr3.getN(); i++) {
                 if (tr3.getAttributeValue(i+1, "temperature")!="cool") {
                     tr3.deleteInstance(i+1);
                 }
             }
+            tr3.deleteAttribute("temperature");
             if (tr3.getN()==0) {
                 int labelYes = 0;
                 int labelNo = 0;
@@ -244,21 +274,25 @@ void ID3::classification(Training tr) {
                 }
                 if (labelYes>labelNo) {
                     //label yes
+                    root.getRight()->setData("yes");
                 } else {
                     //label no
+                    root.getRight()->setData("no");
                 }
             } else {
-                classification(tr3);
+                root.setRight(classification(tr3));
             }
             
         } else if (bestAttr=="humidity") {
             //add branch high
+            root.setLeftBranch("high");
             Training tr1 = tr;
             for (int i=0; i<tr1.getN(); i++) {
                 if (tr1.getAttributeValue(i+1, "humidity")!="high") {
                     tr1.deleteInstance(i+1);
                 }
             }
+            tr1.deleteAttribute("humidity");
             if (tr1.getN()==0) {
                 int labelYes = 0;
                 int labelNo = 0;
@@ -271,20 +305,24 @@ void ID3::classification(Training tr) {
                 }
                 if (labelYes>labelNo) {
                     //label yes
+                    root.getLeft()->setData("yes");
                 } else {
                     //label no
+                    root.getLeft()->setData("no");
                 }
             } else {
-                classification(tr1);
+                root.setLeft(classification(tr1));
             }
             
             //add branch normal
+            root.setRightBranch("normal");
             Training tr2 = tr;
             for (int i=0; i<tr2.getN(); i++) {
                 if (tr2.getAttributeValue(i+1, "humidity")!="normal") {
                     tr2.deleteInstance(i+1);
                 }
             }
+            tr2.deleteAttribute("humidity");
             if (tr2.getN()==0) {
                 int labelYes = 0;
                 int labelNo = 0;
@@ -297,21 +335,25 @@ void ID3::classification(Training tr) {
                 }
                 if (labelYes>labelNo) {
                     //label yes
+                    root.getRight()->setData("yes");
                 } else {
                     //label no
+                    root.getRight()->setData("no");
                 }
             } else {
-                classification(tr2);
+                root.setRight(classification(tr2));
             }
             
         } else if (bestAttr=="wind") {
             //add branch strong
+            root.setLeftBranch("strong");
             Training tr1 = tr;
             for (int i=0; i<tr1.getN(); i++) {
                 if (tr1.getAttributeValue(i+1, "wind")!="strong") {
                     tr1.deleteInstance(i+1);
                 }
             }
+            tr1.deleteAttribute("wind");
             if (tr1.getN()==0) {
                 int labelYes = 0;
                 int labelNo = 0;
@@ -324,20 +366,24 @@ void ID3::classification(Training tr) {
                 }
                 if (labelYes>labelNo) {
                     //label yes
+                    root.getLeft()->setData("yes");
                 } else {
                     //label no
+                    root.getLeft()->setData("no");
                 }
             } else {
-                classification(tr1);
+                root.setLeft(classification(tr1));
             }
             
             //add branch weak
+            root.setRightBranch("weak");
             Training tr2 = tr;
             for (int i=0; i<tr2.getN(); i++) {
                 if (tr2.getAttributeValue(i+1, "wind")!="weak") {
                     tr2.deleteInstance(i+1);
                 }
             }
+            tr2.deleteAttribute("wind");
             if (tr2.getN()==0) {
                 int labelYes = 0;
                 int labelNo = 0;
@@ -350,15 +396,18 @@ void ID3::classification(Training tr) {
                 }
                 if (labelYes>labelNo) {
                     //label yes
+                    root.getRight()->setData("yes");
                 } else {
                     //label no
+                    root.getRight()->setData("no");
                 }
             } else {
-                classification(tr2);
+                root.setRight(classification(tr2));
             }
             
         }
     }
+    return root;
 }
 
 double ID3::entropy(double numYes, double numNo) {

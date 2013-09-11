@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include "training.h"
+#include "tree.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ public:
     ID3();
     ID3(Training);
     
-    void classification(Training);
+    Tree classification(Training);
     double entropy(double, double);
     double gainOutlook(double, double, double, double, double, double, double, double);
     double gainTemperature(double, double, double, double, double, double, double, double);

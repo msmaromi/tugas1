@@ -1,0 +1,13 @@
+@RELATION PlayTennis
+
+@ATTRIBUTE outlook STRING
+@ATTRIBUTE temperature STRING
+@ATTRIBUTE humidity STRING
+@ATTRIBUTE wind STRING
+@ATTRIBUTE class {yes,no}
+
+@DATA
+sunny,hot,high,weak,no
+sunny,hot,high,strong,no
+overcast,hot,high,weak,yes
+rain,mild,high,weak,no
