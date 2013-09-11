@@ -35,15 +35,15 @@ Tree::Tree(string s) {
 }
 
 void Tree::setLeft(Tree t) {
-    *left = t;
+    left = &t;
 }
 
 void Tree::setCenter(Tree t) {
-    *center = t;
+    center = &t;
 }
 
 void Tree::setRight(Tree t) {
-    *right = t;
+    right = &t;
 }
 
 void Tree::setLeftBranch(string s) {
@@ -132,17 +132,17 @@ void Tree::printTree() {
             } else {
                 cout << center->getData() << "),";
             }
-        }
-        cout << rightBranch << "(";
-        if (right->isNode()) {
-            right->printTree();
         } else {
-            cout << right->getData() << ")";
+            cout << rightBranch << "(";
+            if (right->isNode()) {
+                right->printTree();
+            } else {
+                cout << right->getData() << ")";
+            }
+            cout << ")";
         }
-        cout << ")";
     }
     cout << ")";
-    cout << endl;
 }
 
 

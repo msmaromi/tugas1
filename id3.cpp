@@ -27,7 +27,7 @@ Tree ID3::classification(Training tr) {
 
     } else if (tr.isAllNo()) {
         //single root node label no
-        root.setData("no");
+        root.setData("no");        
     } else if (tr.getNumberAttr()==0) {
         int numYes = 0;
         int numNo = 0;
@@ -102,8 +102,6 @@ Tree ID3::classification(Training tr) {
         
         //root << bestAttr
         root.setData(bestAttr);
-        cout << bestAttr << endl;
-                
         if (bestAttr=="outlook") {
             //add branch sunny
             root.setLeftBranch("sunny");

@@ -29,5 +29,6 @@ int main() {
     
     Tree result;
     result = learner.classification(tr1);    
-    result.printTree();
+    //result.printTree();
+    cout << endl;
 }
