@@ -20,16 +20,14 @@ public:
     ID3();
     ID3(Training);
     
-    Tree classification(Training);
-    double entropy(double, double);
-    double gainOutlook(double, double, double, double, double, double, double, double);
-    double gainTemperature(double, double, double, double, double, double, double, double);
-    double gainHumidity(double, double, double, double, double, double);
-    double gainWind(double, double, double, double, double, double);
-
+    void classification(Training, Tree*);
+    double entropy(Training);
+    double informationGain(Training, string);
+    double countYes(Training);
+    double countNo(Training);
     
 private:
-    //Tree  tr;
+    Tree *root;
     
 };
 

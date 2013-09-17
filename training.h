@@ -13,6 +13,7 @@
 #include <fstream>
 #include <map>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -20,56 +21,32 @@ class Training {
 public:
     Training();
     Training(string);
-    Training(const Training&);
+    Training(Training&);
     ~Training();
     
-    string getAttribute(int);
+    vector<string> getAttributeValues(string);
     string getTargetAttribute();
-    string getAttributeValue(int, string);
-    int getNumberAttr();
-    int getN();
+    string getDataValue(int, string);
+    vector< map<string, string> > getDataVector();
+    
+    string getAttribute(int);
+    int getNumberAttribute();
+    int getNumberData();
     bool isAllYes();
     bool isAllNo();
     
     void deleteAttribute(string);
     void deleteInstance(int);
     
-    double countNumYes();
-    double countNumNo();
-    
-    double countSunYes();
-    double countSunNo();
-    double countOverYes();
-    double countOverNo();
-    double countRainYes();
-    double countRainNo();
-    
-    double countHotYes();
-    double countHotNo();
-    double countMildYes();
-    double countMildNo();
-    double countCoolYes();
-    double countCoolNo();
-    
-    double countHighYes();
-    double countHighNo();
-    double countNormalYes();
-    double countNormalNo();
-    
-    double countStrongYes();
-    double countStrongNo();
-    double countWeakYes();
-    double countWeakNo();
     
 private:
-    string * attribute;
+    map<string, vector<string> > attribute;
+    vector<string> attributeIndex;
     string targetAttribute;
-    map<string, string> * data;
-    int N; //jumlah training data
-    int numberAttr;
+    vector< map<string, string> > data;   
     
     void extractFile(string);
-    void extractAttribute(string);
+    void extractAttribute();
 };
 
 #endif /* defined(____training__) */

@@ -10,52 +10,38 @@ Tree::Tree() {
     data = "";
 }
 
-Tree::Tree(string s) {
-    if (s=="outlook") {
-        leftBranch = "sunny";
-        centerBranch = "overcast";
-        rightBranch = "rain";
-    } else if (s=="temperature") {
-        leftBranch = "hot";
-        centerBranch = "mild";
-        rightBranch = "cool";
-    } else if (s=="humidity") {
-        leftBranch = "high";
-        centerBranch = "";
-        rightBranch = "normal";
-    } else if (s=="wind") {
-        leftBranch = "strong";
-        centerBranch = "";
-        rightBranch = "weak";
-    }
+Tree::Tree(string s) {   
     left = NULL;
     center = NULL;
     right = NULL;
+    leftBranch = "";
+    centerBranch = "";
+    rightBranch = "";
     data = s;
 }
 
-void Tree::setLeft(Tree t) {
-    left = &t;
+Tree::~Tree() {
+    
 }
 
-void Tree::setCenter(Tree t) {
-    center = &t;
+void Tree::addTree(Tree* t)  {
+    if (left==NULL) {
+        left = t;
+    } else if (center==NULL) {
+        center = t;
+    } else if (right==NULL) {
+        right = t;
+    }
 }
 
-void Tree::setRight(Tree t) {
-    right = &t;
-}
-
-void Tree::setLeftBranch(string s) {
-    leftBranch = s;
-}
-
-void Tree::setCenterBranch(string s) {
-    centerBranch = s;
-}
-
-void Tree::setRightBranch(string s) {
-    rightBranch = s;
+void Tree::addBranch(string s) {
+    if (leftBranch=="") {
+        leftBranch = s;
+    } else if (centerBranch=="") {
+        centerBranch = s;
+    } else if (rightBranch=="") {
+        rightBranch = s;
+    }
 }
 
 
@@ -83,20 +69,8 @@ string Tree::getRightBranch() {
     return rightBranch;
 }
 
-void Tree::addNode(string s) {
-   
-}
-
 bool Tree::isLeaf() {
     if (left==NULL && center==NULL && right==NULL) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-bool Tree::isNode() {
-    if (this!=NULL) {
         return true;
     } else {
         return false;
@@ -111,38 +85,51 @@ string Tree::getData() {
     return data;
 }
 
-void Tree::printTree() {
-    cout << "(";
+void Tree::printTree() {  
     if (isLeaf()) {
-        cout << data;
+        cout << data << endl;
+        
     } else {
+        cout << "--";
         cout << data;
-        cout << "(";
-
-        cout << leftBranch << "(";
-        if (left->isNode()) {
-            left->printTree();
+        cout << "=";
+        cout << leftBranch;
+        if (left->isLeaf()) {
+            cout << " ";
         } else {
-            cout << left->getData() << "),";
+            cout << endl;
+            //cout << "--";
         }
+        left->printTree();
+        
         if (centerBranch!="") {
-            cout << centerBranch << "(";
-            if (center->isNode()) {
-                center->printTree();
+            cout << "--";
+            cout << data;
+            cout << "=";
+            cout << centerBranch;
+            if (center->isLeaf()) {
+                cout << " ";
             } else {
-                cout << center->getData() << "),";
+                cout << endl;
+                //cout << "--";
             }
-        } else {
-            cout << rightBranch << "(";
-            if (right->isNode()) {
+            center->printTree();
+            
+            if (rightBranch!="") {
+                cout << "--";
+                cout << data;
+                cout << "=";
+                cout << rightBranch;
+                if (right->isLeaf()) {
+                    cout << " ";
+                } else {
+                    cout << endl;
+                    //cout << "--";
+                }
                 right->printTree();
-            } else {
-                cout << right->getData() << ")";
             }
-            cout << ")";
         }
     }
-    cout << ")";
 }
 
 

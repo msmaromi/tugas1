@@ -7,7 +7,5 @@
 @ATTRIBUTE class {yes,no}
 
 @DATA
-sunny,hot,high,weak,no
+sunny,hot,high,strong,yes
 sunny,hot,high,strong,no
-overcast,hot,high,weak,yes
-rain,mild,high,weak,no

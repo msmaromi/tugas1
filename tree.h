@@ -17,18 +17,15 @@ private:
     string rightBranch;
     
     string data;
+    int depth;
 
 public:
     Tree();
     Tree(string);
+    ~Tree();
     
-    void setLeft(Tree);
-    void setCenter(Tree);
-    void setRight(Tree);
-    
-    void setLeftBranch(string);
-    void setCenterBranch(string);
-    void setRightBranch(string);
+    void addTree(Tree*);
+    void addBranch(string);
     
     Tree* getLeft();
     Tree* getCenter();
@@ -37,8 +34,7 @@ public:
     string getLeftBranch();
     string getCenterBranch();
     string getRightBranch();
-    
-    void addNode(string);
+        
     bool isLeaf();
     bool isNode();
     void setData(string);
